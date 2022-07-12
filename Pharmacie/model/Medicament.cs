@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using System;
 
-namespace Pharmacie
+namespace Pharmacie.model
 {
     /// <summary>
     /// Classe métier Medicament
@@ -12,7 +12,7 @@ namespace Pharmacie
         /// Constructeur : valorise les propriétés
         /// </summary>
         /// <param name="nom"></param>
-        /// <param name="libelleATC3"></param>
+        /// <param name="libelle"></param>
         /// <param name="forme"></param>
         /// <param name="recommandation"></param>
         public Medicament(string nom, string libelle, string forme, string recommandation)

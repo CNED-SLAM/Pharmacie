@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 
-namespace Pharmacie
+namespace Pharmacie.model
 {
     /// <summary>
     /// Classe métier recommandation
