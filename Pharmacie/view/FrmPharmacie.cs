@@ -1,23 +1,19 @@
-﻿using MongoDB.Driver;
+﻿using Pharmacie.controller;
+using Pharmacie.model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
-namespace Pharmacie
+namespace Pharmacie.view
 {
     /// <summary>
-    /// Classe FrmPharmacie : affichage des médicaments, ajoute et suppression
+    /// Classe FrmPharmacie : affichage des médicaments, ajout et suppression
     /// </summary>
     public partial class FrmPharmacie : Form
     {
-        private const string connectionString = "mongodb://127.0.0.1:27017";
-        private readonly MongoClient client = new MongoClient(connectionString);
-        private IMongoDatabase db;
-        private IMongoCollection<Medicament> colMedicaments;
-        private IMongoCollection<Recommandation> colRecommandations;
         private readonly BindingSource bdgMedicaments = new BindingSource();
         private readonly BindingSource bdgRecommandations = new BindingSource();
+        private Controller controller;
 
         /// <summary>
         /// Consutructeur : initialisation des objets graphiques et appel de la méthode Init
@@ -29,14 +25,12 @@ namespace Pharmacie
         }
 
         /// <summary>
-        /// Initialisation des objets de connexion à la BDD
+        /// création du contrôleur
         /// appel des méthodes de chargement des listes graphiques
         /// </summary>
         private void Init()
         {
-            db = client.GetDatabase("pharmacie");
-            colMedicaments = db.GetCollection<Medicament>("medicaments");
-            colRecommandations = db.GetCollection<Recommandation>("recommandations");
+            controller = new Controller();
             LoadMedicaments();
             LoadRecommandations();
         }
@@ -47,7 +41,7 @@ namespace Pharmacie
         private void LoadMedicaments()
         {
             dgvMedicaments.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing; // pour améliorer le temps de chargement
-            List<Medicament> lesMedicaments = colMedicaments.AsQueryable().ToList<Medicament>();
+            List<Medicament> lesMedicaments = controller.GetMedicaments();
             lesMedicaments.Sort();
             bdgMedicaments.DataSource = lesMedicaments;
             dgvMedicaments.DataSource = bdgMedicaments;
@@ -63,7 +57,7 @@ namespace Pharmacie
         /// </summary>
         private void LoadRecommandations()
         {
-            List<Recommandation> lesRecommandations = colRecommandations.AsQueryable().ToList<Recommandation>();
+            List<Recommandation> lesRecommandations = controller.GetRecommandations();
             bdgRecommandations.DataSource = lesRecommandations;
             cboRecommandations.DataSource = bdgRecommandations;
             lstRecommandations.DataSource = bdgRecommandations;
@@ -97,8 +91,7 @@ namespace Pharmacie
         /// <param name="medicament"></param>
         private void SupprMedicament(Medicament medicament)
         {
-            FilterDefinition<Medicament> filter = Builders<Medicament>.Filter.Eq("Id", medicament.Id);
-            colMedicaments.DeleteOne(filter);
+            controller.SupprMedicament(medicament);
         }
 
         /// <summary>
@@ -127,7 +120,7 @@ namespace Pharmacie
         {
             Recommandation recommandation = (Recommandation)bdgRecommandations.List[bdgRecommandations.Position];
             Medicament medicament = new Medicament(txtNom.Text, txtLibelle.Text, txtForme.Text, recommandation.code);
-            colMedicaments.InsertOne(medicament);
+            controller.AjoutMedicament(medicament);
         }
 
         /// <summary>

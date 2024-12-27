@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using System;
 
-namespace Pharmacie
+namespace Pharmacie.model
 {
     /// <summary>
     /// Classe métier Medicament

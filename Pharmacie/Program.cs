@@ -16,7 +16,7 @@ namespace Pharmacie
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmPharmacie());
+            Application.Run(new view.FrmPharmacie());
         }
     }
 }

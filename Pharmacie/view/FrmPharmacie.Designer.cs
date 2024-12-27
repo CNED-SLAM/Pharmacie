@@ -1,5 +1,5 @@
 ﻿
-namespace Pharmacie
+namespace Pharmacie.view
 {
     partial class FrmPharmacie
     {
